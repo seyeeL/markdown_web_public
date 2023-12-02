@@ -28,3 +28,11 @@ li:has(input) input {
   margin-left: -20px;
   margin-right: 5px;
 }
+
+
+pre code {
+  width: 100%;
+  display: flex;
+  /* overflow-y: auto; */
+  white-space: initial;
+}

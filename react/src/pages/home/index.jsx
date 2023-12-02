@@ -37,6 +37,7 @@ const Home = () => {
   const [tags, setTags] = useState([])
   const [folders, setFolders] = useState([])
   const [keyword, setKeyword] = useState('')
+  const [hasMemos, setHasMemos] = useState(false)
   const [onlyTitle, setOnlyTitle] = useState(false)
   const [showDrawer, setShowDrawer] = useState(false)
   const [viewType, setViewType] = useState('卡片')
@@ -50,26 +51,24 @@ const Home = () => {
     const qValue = urlParams.get('q')
     setViewportWidth(window.innerWidth)
     setKeyword(qValue)
-    fetchContentList(qValue)
+    fetchContentList({
+      keyword: qValue
+    })
   }, [location])
 
   // 判断浏览器视口宽度
   const checkViewportWidth = viewportWidth < 500
 
   // 获取memos数据
-  const fetchContentList = async (keyword, newKeyword) => {
+  const fetchContentList = async info => {
     setMemos([])
-    console.log('fetchContentList', onlyTitle)
 
-    let params = { keyword }
-    if (newKeyword) {
-      params.onlyTitle = newKeyword
-    } else {
-      params.onlyTitle = onlyTitle ? '1' : '0'
-    }
+    let params = { keyword, hasMemos, onlyTitle, ...info }
+    params.hasMemos = params.hasMemos ? '1' : null
+    params.onlyTitle = params.onlyTitle ? '1' : null
     try {
       let { memos, tags, folders } = await contentList(params)
-      console.log('response', memos, tags)
+      // console.log('response', memos, tags)
 
       setMemos(memos.filter(item => item && item.content))
       setTags(tags)
@@ -78,20 +77,7 @@ const Home = () => {
           return { label: item, value: item }
         })
       )
-      // setTimeout(() => {
-      // const inputElement = document.querySelectorAll('input')
-
-      // if (inputElement) {
-      //   console.log('Input clicked!', inputElement)
-      //   const inputArray = Array.from(inputElement)
-      //   // 注册点击事件处理程序
-      //   inputArray.forEach(item => {
-      //     item.onclick = () => {
-      //       console.log(111)
-      //     }
-      //   })
-      // }
-      // }, 1000)
+      // goTop('instant')  // 注释滚动是因为有时候我跳转到 obsidian 修改了回来刷新
     } catch (error) {
       console.error('Error fetching blog posts:', error)
     }
@@ -130,11 +116,11 @@ const Home = () => {
   }
 
   // 滚动到顶部
-  const goTop = () => {
+  const goTop = behavior => {
     console.log(`goTop`)
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: behavior || 'smooth'
     })
   }
   const changeKeyword = value => {
@@ -144,12 +130,23 @@ const Home = () => {
     }
   }
   const changeOnlyTitle = value => {
-    // console.log(`onlyTitle`, value)
     setOnlyTitle(value)
     if (!keyword) {
       return
     }
-    fetchContentList(keyword, value ? '1' : '0')
+    fetchContentList({
+      keyword,
+      onlyTitle: value
+    })
+  }
+
+  // 是否搜索 YYYY-MM-DD HH.mm.ss 格式的内容
+  const changehasMemos = value => {
+    setHasMemos(value)
+    fetchContentList({
+      keyword,
+      hasMemos: value
+    })
   }
 
   const handleSearch = value => {
@@ -157,9 +154,8 @@ const Home = () => {
     if (checkViewportWidth) {
       setShowDrawer(false)
     }
-    // fetchContentList(keyword)
     const encodedValue = encodeURIComponent(value)
-    const url = value ? `/xxxxxx#?q=${encodedValue}` : '/xxxxxx'
+    const url = value ? `/djfhfggff#?q=${encodedValue}` : '/djfhfggff'
     navigate(url)
   }
 
@@ -226,8 +222,11 @@ const Home = () => {
           onSearch={() => handleSearch(keyword)}
           allowClear
         />
-        <Tooltip title="仅搜索标题">
+        {/* <Tooltip title="仅搜索标题">
           <Switch className="ml20 " size="small" checked={onlyTitle} onChange={e => changeOnlyTitle(e)} />
+        </Tooltip> */}
+        <Tooltip title="包含memos">
+          <Switch className="ml20 " size="small" checked={hasMemos} onChange={e => changehasMemos(e)} />
         </Tooltip>
         {/* 视图切换 */}
         <Dropdown className="blue pointer ml20" menu={{ items, onClick: changeView }} trigger={['click']}>
