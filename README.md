@@ -15,9 +15,9 @@ npm run server
 // 启动前端
 cd react
 npm i
-npm run dev
+npm run dev 
 ```
-
+根路径的登陆页面是个假的，还没做，笔记主页在 /xxxxxx 路径 打开 localhost:5173/xxxxxx
 
 ### 一些示例图
 
