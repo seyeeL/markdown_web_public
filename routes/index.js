@@ -6,8 +6,10 @@ const { eachYearDay } = require('../config/index')
 const { homePath } = require('../config/env')
 
 let allFolder = []
-const mdFolder = ['journals', '我的笔记']  // #config 配置 obsidian 根目录中需要展示在页面上的子文件夹，目前页面上的下拉选择器还没有生效
-// const mdFolder = ['journals', '我的笔记', 'wucai']
+// #config 配置 obsidian 根目录中需要展示在页面上的子文件夹，比如我的 obsidian 里有十几个文件夹，但是只想搜这两个文件夹就这样配置，搜索范围只会包含该文件夹下的一级文件，目前没有做嵌套二级以上文件夹的搜索
+const mdFolder = ['journals', '我的笔记']  
+
+
 const { marked } = require('marked')
 const tagRegex = /(\s|^|[\r\n])#[\u4e00-\u9fa5a-zA-Z]+/g // 标签名的正则表达式
 const secondsTimestamp = /^\d{4}-\d{2}-\d{2} \d{2}.\d{2}.\d{2}$/ // 正则表达式匹配 YYYY-MM-DD HH:mm:ss 格式的文本
