@@ -6,6 +6,19 @@
 
 目前还没有做到对小白用户开箱即用，需要一点编程能力。可以搜索 #config 做一些配置
 
+```
+// 启动后端
+cd markdown_web_public
+npm i
+npm run server
+
+// 启动前端
+cd react
+npm i
+npm run dev
+```
+
+
 ### 一些示例图
 
 ![](https://seyee.oss-cn-beijing.aliyuncs.com/assets/202312021926555.png)
