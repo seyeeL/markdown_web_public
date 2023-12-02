@@ -6,7 +6,7 @@ const { eachYearDay } = require('../config/index')
 const { homePath } = require('../config/env')
 
 let allFolder = []
-const mdFolder = ['journals', '我的笔记']
+const mdFolder = ['journals', '我的笔记']  // #config 配置 obsidian 根目录中需要展示在页面上的子文件夹，目前页面上的下拉选择器还没有生效
 // const mdFolder = ['journals', '我的笔记', 'wucai']
 const { marked } = require('marked')
 const tagRegex = /(\s|^|[\r\n])#[\u4e00-\u9fa5a-zA-Z]+/g // 标签名的正则表达式
